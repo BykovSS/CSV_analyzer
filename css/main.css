@@ -1,0 +1,101 @@
+body {
+  margin: 0; }
+
+h3 {
+  margin-bottom: 20px; }
+
+.form-label {
+  font-size: 18px;
+  display: inline-block;
+  margin: 0; }
+
+.form-input {
+  margin-left: 15px;
+  padding-left: 5px;
+  width: 200px;
+  display: inline-block; }
+
+.form-button {
+  margin-left: 15px;
+  vertical-align: bottom; }
+
+input.input-file_hidden {
+  display: none; }
+
+.form-fieldset {
+  background-color: #dadada;
+  border: 1px solid #777;
+  -webkit-border-radius: 5px;
+          border-radius: 5px;
+  padding: 0 20px 20px;
+  margin: 0 0 10px; }
+  .form-fieldset .form-legend {
+    width: inherit;
+    background-color: #dadada;
+    padding: 0 10px;
+    border: 1px solid #777;
+    -webkit-border-radius: 5px;
+            border-radius: 5px;
+    margin-bottom: 10px; }
+  .form-fieldset .form-prima_skill, .form-fieldset .form-seconda_skill, .form-fieldset .form-macro_area, .form-fieldset .form-experience, .form-fieldset .form-education, .form-fieldset .form-profile {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    margin-top: 10px; }
+    .form-fieldset .form-prima_skill .form-label_infieldset, .form-fieldset .form-seconda_skill .form-label_infieldset, .form-fieldset .form-macro_area .form-label_infieldset, .form-fieldset .form-experience .form-label_infieldset, .form-fieldset .form-education .form-label_infieldset, .form-fieldset .form-profile .form-label_infieldset {
+      font-size: 16px;
+      display: inline-block;
+      margin: 0;
+      padding: 7px 0 0; }
+    .form-fieldset .form-prima_skill .button, .form-fieldset .form-seconda_skill .button, .form-fieldset .form-macro_area .button, .form-fieldset .form-experience .button, .form-fieldset .form-education .button, .form-fieldset .form-profile .button {
+      font-size: 25px;
+      margin-left: 10px;
+      cursor: pointer; }
+      .form-fieldset .form-prima_skill .button:active, .form-fieldset .form-seconda_skill .button:active, .form-fieldset .form-macro_area .button:active, .form-fieldset .form-experience .button:active, .form-fieldset .form-education .button:active, .form-fieldset .form-profile .button:active {
+        color: transparent;
+        text-shadow: 1px 1px #333; }
+    .form-fieldset .form-prima_skill .basket-button, .form-fieldset .form-seconda_skill .basket-button, .form-fieldset .form-macro_area .basket-button, .form-fieldset .form-experience .basket-button, .form-fieldset .form-education .basket-button, .form-fieldset .form-profile .basket-button {
+      margin-left: 14px; }
+  .form-fieldset .form-experience p {
+    padding: 0 !important; }
+  .form-fieldset .form-experience b.begin {
+    padding: 0 15px 0 0; }
+  .form-fieldset .form-experience b.end {
+    padding: 0 15px 0 15px; }
+  .form-fieldset .form-education p.form-label_infieldset {
+    margin-top: 10px; }
+  .form-fieldset .form-education .education-level {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    margin-top: 10px; }
+    .form-fieldset .form-education .education-level p.form-sublabel_infieldset {
+      font-size: 16px;
+      display: inline-block;
+      margin: 0;
+      padding: 7px 0 0; }
+  .form-fieldset .form-profile {
+    margin-top: 20px; }
+    .form-fieldset .form-profile p {
+      padding: 0 !important; }
+    .form-fieldset .form-profile b.begin {
+      padding: 0 15px 0 0; }
+    .form-fieldset .form-profile b.end {
+      padding: 0 15px 0 15px; }
+
+.button_go, .button_load {
+  text-align: center;
+  margin-top: 20px; }
+  .button_go input.go, .button_load input.go {
+    width: 30%; }
+
+.button_load {
+  margin-bottom: 20px; }
+
+table.output {
+  margin-top: 30px; }
+
+hr {
+  border-color: #dadada; }
