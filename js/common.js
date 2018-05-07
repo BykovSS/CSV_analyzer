@@ -82,7 +82,7 @@ $(document).ready(function () {
 		if ($(this).parent().hasClass('form-prima_skill')) {
 			div = $('<div>', {
 				class: "form-seconda_skill",
-				html: "<p class=\"col-lg-6 form-label_infieldset\">Seconda skill:</p>\n\t\t\t\t\t\t<select class=\"form-control col-lg-6 form-select_skill\">\n\t\t\t\t\t\t\t<option>---</option>\n\t\t\t\t\t\t</select>\n\t\t\t\t\t\t<span class=\"button basket-button\">&#128465;</span>"
+				html: "<p class=\"col-lg-6 form-label_infieldset\">Skill:</p>\n\t\t\t\t\t\t<select class=\"form-control col-lg-6 form-select_skill\">\n\t\t\t\t\t\t\t<option>---</option>\n\t\t\t\t\t\t</select>\n\t\t\t\t\t\t<span class=\"button basket-button\">&#128465;</span>"
 			});
 			$(div).insertAfter($(this).parent());
 		} else if ($(this).parent().hasClass('form-macro_area')) {
