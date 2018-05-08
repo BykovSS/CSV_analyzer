@@ -28,14 +28,14 @@
 							<div class="form-prima_skill">
 								<p class="col-lg-6 form-label_infieldset">Skill:</p>
 								<select class="form-control col-lg-6 form-select_skill">
-									<option>---</option>
+									<option value="---">---</option>
 								</select>
 								<span class="button plus-button">&#10010;</span>
 							</div>
 							<div class="form-macro_area">
 								<p class="col-lg-6 form-label_infieldset">Sub Area:</p>
-								<select class="form-control col-lg-6 form-select_skill">
-									<option>---</option>
+								<select class="form-control col-lg-6 form-select_area">
+									<option value="---">---</option>
 								</select>
 								<span class="button plus-button">&#10010;</span>
 							</div>
@@ -44,7 +44,7 @@
 							<div class="form-experience">
 								<p class="col-lg-4 form-label_infieldset">Experience:</p>
 								<b class="begin">0</b>
-								<input id="ex2" type="text" class="span2" value="" data-slider-min="0" data-slider-max="10" data-slider-step="1" data-slider-value="[0,10]"/>
+								<input id="experience" type="text" class="span2" value="" data-slider-min="0" data-slider-max="10" data-slider-step="1" data-slider-value="[0,10]"/>
 								<b class="end">10</b>
 							</div>
 							<div class="form-education">
@@ -52,13 +52,13 @@
 								<div class="col-lg-10">
 									<div class="education-level">
 										<p class="col-lg-2 form-sublabel_infieldset">min:</p>
-										<select class="col-lg-10 form-control form-select_skill">
+										<select class="col-lg-10 form-control form-select-education form-select-education_min">
 											<option>---</option>
 										</select>
 									</div>
 									<div class="education-level">
 										<p class="col-lg-2 form-sublabel_infieldset">max:</p>
-										<select class="col-lg-10 form-control form-select_skill">
+										<select class="col-lg-10 form-control form-select-education form-select-education_min">
 											<option>---</option>
 										</select>
 									</div>
@@ -69,7 +69,7 @@
 				</div>
 			</fieldset>
 			<div class="button_load">
-				<input type="button" class="btn btn-primary load" value="Load from Model">
+				<input type="button" id="load-from-model" class="btn btn-primary load" value="Load from Model">
 			</div>
 			<fieldset class="form-fieldset">
 				<legend class="form-legend">Profile</legend>
@@ -78,134 +78,62 @@
 						<div class="col-lg-5">
 							<div class="form-profile">
 								<p class="col-lg-4 form-label_infieldset">Analytics:</p>
-								<input id="ex11" type="text" data-slider-min="0" data-slider-max="10" data-slider-step="1" data-slider-value="0"/>
-								<b id="ex11SliderVal" class="end">0</b>
+								<input id="analytics" type="text" data-slider-min="0" data-slider-max="10" data-slider-step="1" data-slider-value="0"/>
+								<b id="analyticsSliderVal" class="end">0</b>
 							</div>
 							<div class="form-profile">
 								<p class="col-lg-4 form-label_infieldset">Software Bl:</p>
-								<input id="ex21" type="text" data-slider-min="0" data-slider-max="10" data-slider-step="1" data-slider-value="0"/>
-								<b id="ex21SliderVal" class="end">0</b>
+								<input id="softwarebl" type="text" data-slider-min="0" data-slider-max="10" data-slider-step="1" data-slider-value="0"/>
+								<b id="softwareblSliderVal" class="end">0</b>
 							</div>
 							<div class="form-profile">
 								<p class="col-lg-4 form-label_infieldset">Data mgmt:</p>
-								<input id="ex31" type="text" data-slider-min="0" data-slider-max="10" data-slider-step="1" data-slider-value="0"/>
-								<b id="ex31SliderVal" class="end">0</b>
+								<input id="datamgmt" type="text" data-slider-min="0" data-slider-max="10" data-slider-step="1" data-slider-value="0"/>
+								<b id="datamgmtSliderVal" class="end">0</b>
 							</div>
 							<div class="form-profile">
 								<p class="col-lg-4 form-label_infieldset">Programming:</p>
-								<input id="ex41" type="text" data-slider-min="0" data-slider-max="10" data-slider-step="1" data-slider-value="0"/>
-								<b id="ex41SliderVal" class="end">0</b>
+								<input id="programming" type="text" data-slider-min="0" data-slider-max="10" data-slider-step="1" data-slider-value="0"/>
+								<b id="programmingSliderVal" class="end">0</b>
 							</div>
 						</div>
 						<div class="col-lg-5 col-lg-offset-2">
 							<div class="form-profile">
 								<p class="col-lg-4 form-label_infieldset">IT System:</p>
-								<input id="ex12" type="text" data-slider-min="0" data-slider-max="10" data-slider-step="1" data-slider-value="0"/>
-								<b id="ex12SliderVal" class="end">0</b>
+								<input id="itsystem" type="text" data-slider-min="0" data-slider-max="10" data-slider-step="1" data-slider-value="0"/>
+								<b id="itsystemSliderVal" class="end">0</b>
 							</div>
 							<div class="form-profile">
 								<p class="col-lg-4 form-label_infieldset">Soft Skills:</p>
-								<input id="ex22" type="text" data-slider-min="0" data-slider-max="10" data-slider-step="1" data-slider-value="0"/>
-								<b id="ex22SliderVal" class="end">0</b>
+								<input id="softskills" type="text" data-slider-min="0" data-slider-max="10" data-slider-step="1" data-slider-value="0"/>
+								<b id="softskillsSliderVal" class="end">0</b>
 							</div>
 							<div class="form-profile">
 								<p class="col-lg-4 form-label_infieldset">Risk:</p>
-								<input id="ex32" type="text" data-slider-min="0" data-slider-max="10" data-slider-step="1" data-slider-value="0"/>
-								<b id="ex32SliderVal" class="end">0</b>
+								<input id="risk" type="text" data-slider-min="0" data-slider-max="10" data-slider-step="1" data-slider-value="0"/>
+								<b id="riskSliderVal" class="end">0</b>
 							</div>
 							<div class="form-profile">
 								<p class="col-lg-4 form-label_infieldset">Education:</p>
-								<input id="ex42" type="text" data-slider-min="0" data-slider-max="10" data-slider-step="1" data-slider-value="0"/>
-								<b id="ex42SliderVal" class="end">0</b>
+								<input id="education" type="text" data-slider-min="0" data-slider-max="10" data-slider-step="1" data-slider-value="0"/>
+								<b id="educationSliderVal" class="end">0</b>
 							</div>
 						</div>
 					</div>
 				</div>
 			</fieldset>
 			<div class="button_go">
-				<input type="button" class="btn btn-primary go" value="GO!">
+				<input type="button" class="btn btn-primary go" id="go" value="GO!">
 			</div>
-			<table class="table table-bordered table-striped output">
-				<thead>
-					<tr>
-						<th>Name</th>
-						<th>Appeal</th>
-						<th>Experience</th>
-						<th>Software Bl</th>
-						<th>Data mgmt</th>
-						<th>Programming</th>
-						<th>IT System</th>
-						<th>Soft Skills</th>
-						<th>Risk</th>
-						<th>Education</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>Jack</td>
-						<td>1</td>
-						<td>1</td>
-						<td>1</td>
-						<td>1</td>
-						<td>1</td>
-						<td>1</td>
-						<td>1</td>
-						<td>1</td>
-						<td>1</td>
-					</tr>
-					<tr>
-						<td>Donald</td>
-						<td>1</td>
-						<td>1</td>
-						<td>1</td>
-						<td>1</td>
-						<td>1</td>
-						<td>1</td>
-						<td>1</td>
-						<td>1</td>
-						<td>1</td>
-					</tr>
-					<tr>
-						<td>Bill</td>
-						<td>1</td>
-						<td>1</td>
-						<td>1</td>
-						<td>1</td>
-						<td>1</td>
-						<td>1</td>
-						<td>1</td>
-						<td>1</td>
-						<td>1</td>
-					</tr>
-				</tbody>
-			</table>
+			<table class="table table-bordered table-striped output" id="table-go"></table>
 			<hr>
 			<div class="form-group">
 				<h3>Skills</h3>
     			<p class="form-label">Name:</p>
-    			<input class="form-control form-input" type="text" placeholder="Enter a name...">
-    			<input type="button" class="btn btn-primary form-button" value="Search">
+    			<input class="form-control form-input" id="search-input" type="text" placeholder="Enter a name...">
+    			<input type="button" id="search" class="btn btn-primary form-button" value="Search">
 			</div>
-			<table class="table table-bordered output">
-				<thead>
-					<tr>
-						<th>Name</th>
-						<th>Area</th>
-						<th>Sub Area</th>
-						<th>Skill</th>
-						<th>Expertise</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>Donald</td>
-						<td>Italy</td>
-						<td>Italy</td>
-						<td>skill</td>
-						<td>1</td>
-					</tr>
-				</tbody>
-			</table>
+			<table id="table-search" class="table table-bordered output"></table>
 		</form>
 	</div>
 </body>
