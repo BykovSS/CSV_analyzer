@@ -1,5 +1,7 @@
 'use strict';
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 $(document).ready(function () {
 	var fileIsDownloaded = false,
 	    //file download flag
@@ -107,6 +109,7 @@ $(document).ready(function () {
 					fileIsDownloaded = false;
 					clearFields();
 					fillInFields(results);
+					results.data.pop();
 					workdata = results.data;
 					fileIsDownloaded = true;
 				}
@@ -221,7 +224,9 @@ $(document).ready(function () {
 						} else if (rezult_field[k].value === 'education') {
 							var _count3 = 0;
 							for (var _l2 = 0; _l2 < educationField.length; _l2++) {
-								if (rezults.data[_i][j].toLowerCase() === educationField[_l2].toLowerCase()) _count3++;
+								if (_typeof(educationField[_l2]) === "object") {
+									if (rezults.data[_i][j].toLowerCase() === educationField[_l2].name.toLowerCase()) _count3++;
+								} else if (rezults.data[_i][j].toLowerCase() === educationField[_l2].toLowerCase()) _count3++;
 							}
 							if (_count3 === 0) educationField.push(rezults.data[_i][j].charAt(0).toUpperCase() + rezults.data[_i][j].substr(1).toLowerCase());
 						}
@@ -250,12 +255,19 @@ $(document).ready(function () {
 
 	//Sort Education field
 	var sortEducationField = function sortEducationField(sampArr, workArr) {
+		if (_typeof(workArr[0]) === "object") {
+			for (var i = 0; i < workArr.length; i++) {
+				var local = workArr[i].name;
+				workArr[i] = local;
+			}
+		}
 		if (workArr.length > 0) {
 			var localArray = [],
 			    count = 0;
-			for (var i = 0; i < sampArr.length; i++) {
+			for (var _i2 = 0; _i2 < sampArr.length; _i2++) {
 				for (var j = 0; j < workArr.length; j++) {
-					if (sampArr[i].name.toLowerCase() === workArr[j].toLowerCase()) {
+
+					if (sampArr[_i2].name.toLowerCase() === workArr[j].toLowerCase()) {
 						localArray[count] = { value: count, name: workArr[j].charAt(0).toUpperCase() + workArr[j].substr(1).toLowerCase() };
 						count++;
 					}
@@ -278,14 +290,14 @@ $(document).ready(function () {
 				valueArr[i] = work_val[i].value;
 			}
 		}
-		for (var _i2 = 0; _i2 < $("." + className).length; _i2++) {
-			if ($("." + className)[_i2].children.length <= 1) {
+		for (var _i3 = 0; _i3 < $("." + className).length; _i3++) {
+			if ($("." + className)[_i3].children.length <= 1) {
 
 				for (var j = 0; j < htmlArr.length; j++) {
 					var option = document.createElement('option');
 					option.innerHTML = htmlArr[j];
 					option.setAttribute('value', valueArr[j]);
-					$("." + className)[_i2].appendChild(option);
+					$("." + className)[_i3].appendChild(option);
 				}
 			}
 		}
@@ -421,9 +433,9 @@ $(document).ready(function () {
 		} else if (filter_values.skill) delete filter_values.skill;
 
 		localvalue = [];
-		for (var _i3 = 0; _i3 < $('.form-select_area').length; _i3++) {
-			if ($('.form-select_area')[_i3].value != "---") {
-				localvalue.push($('.form-select_area')[_i3].value);
+		for (var _i4 = 0; _i4 < $('.form-select_area').length; _i4++) {
+			if ($('.form-select_area')[_i4].value != "---") {
+				localvalue.push($('.form-select_area')[_i4].value);
 			}
 		}
 		if (localvalue.length != 0) {
@@ -459,29 +471,33 @@ $(document).ready(function () {
 		filter_values.education = localvalue;
 		localvalue = [];
 
-		//Sending a request to a Python script file
+		if (fileIsDownloaded) {
+			renderTable(workdata, "table-go");
+		} else {
+			//Sending a request to a Python script file
 
-		$.ajax({
-			url: 'example.csv',
-			type: 'get',
-			data: filter_values,
-			success: function success(data) {
-				//Parsing the selected file from csv into an object that can be analyze
-				if (data) {
-					Papa.parse(data, {
-						complete: function complete(results) {
-							fileIsDownloaded = false;
-							//clearFields();
-							fillInFields(results);
-							results.data.pop();
-							workdata = results.data;
-							fileIsDownloaded = true;
-							renderTable(workdata, "table-go");
-						}
-					});
+			$.ajax({
+				url: 'example.csv',
+				type: 'get',
+				data: filter_values,
+				success: function success(data) {
+					//Parsing the selected file from csv into an object that can be analyze
+					if (data) {
+						Papa.parse(data, {
+							complete: function complete(results) {
+								fileIsDownloaded = false;
+								clearFields();
+								fillInFields(results);
+								results.data.pop();
+								workdata = results.data;
+								fileIsDownloaded = true;
+								renderTable(workdata, "table-go");
+							}
+						});
+					}
 				}
-			}
-		});
+			});
+		}
 
 		// //Creating a filtered array
 		// rezult_array = []; 
@@ -618,8 +634,8 @@ $(document).ready(function () {
 				for (var i = 0; i < workdata[0].length; i++) {
 					if (workdata[0][i].toLowerCase() === 'name') n = i;
 				}
-				for (var _i4 = 1; _i4 < workdata.length; _i4++) {
-					if (workdata[_i4][n].toLowerCase().indexOf(query) != -1) search_rezult.push(workdata[_i4]);
+				for (var _i5 = 1; _i5 < workdata.length; _i5++) {
+					if (workdata[_i5][n].toLowerCase().indexOf(query) != -1) search_rezult.push(workdata[_i5]);
 				}
 				search_rezult.unshift(workdata[0]);
 				renderTable(search_rezult, "table-search");
