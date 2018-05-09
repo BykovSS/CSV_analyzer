@@ -137,18 +137,6 @@ $(document).ready(function () {
 		});
 	});
 
-	//Determine the file type
-	var determineFile = function determineFile(file) {
-		var headers = file.data[0];
-		var localtype = void 0,
-		    firstcount = 0,
-		    secondcount = 0;
-		for (var i = 0; i < headers.length; i++) {
-			if (headers[i].toLowerCase() === 'area' || headers[i].toLowerCase() === 'sub area' || headers[i].toLowerCase() === 'skill' || headers[i].toLowerCase() === 'expertise') firstcount++;else if (headers[i].toLowerCase() === 'appeal' || headers[i].toLowerCase() === 'experience' || headers[i].toLowerCase() === 'analytics' || headers[i].toLowerCase() === 'software bl' || headers[i].toLowerCase() === 'data mgmt' || headers[i].toLowerCase() === 'programming' || headers[i].toLowerCase() === 'it system' || headers[i].toLowerCase() === 'soft skills' || headers[i].toLowerCase() === 'risk' || headers[i].toLowerCase() === 'education') secondcount++;
-		}
-		if (firstcount > secondcount) return "first";else if (firstcount < secondcount) return "second";else return "error";
-	};
-
 	//Filling in the fields of the filters block
 	var fillInFields = function fillInFields(rezults) {
 
@@ -420,168 +408,220 @@ $(document).ready(function () {
 
 	//Behavior of button GO
 	$('#go').on('click', function () {
-		if (fileIsDownloaded) {
-			//Creating a value object for a filter
-			var filter_values = {},
-			    localvalue = [];
-			for (var i = 0; i < $('.form-select_skill').length; i++) {
-				if ($('.form-select_skill')[i].value != "---") {
-					localvalue.push($('.form-select_skill')[i].value);
-				}
+		//Creating a value object for a filter
+		var filter_values = {},
+		    localvalue = [];
+		for (var i = 0; i < $('.form-select_skill').length; i++) {
+			if ($('.form-select_skill')[i].value != "---") {
+				localvalue.push($('.form-select_skill')[i].value);
 			}
-			if (localvalue.length != 0) {
-				filter_values.skill = localvalue;
-			} else if (filter_values.skill) delete filter_values.skill;
-
-			localvalue = [];
-			for (var _i3 = 0; _i3 < $('.form-select_area').length; _i3++) {
-				if ($('.form-select_area')[_i3].value != "---") {
-					localvalue.push($('.form-select_area')[_i3].value);
-				}
-			}
-			if (localvalue.length != 0) {
-				filter_values.area = localvalue;
-			} else if (filter_values.area) delete filter_values.area;
-
-			localvalue = [];
-			localvalue[0] = $('#experience').val().charAt(0);
-			localvalue[1] = $('#experience').val().substring($('#experience').val().length - 1);
-			filter_values.experience = localvalue;
-
-			localvalue = [];
-			filter_values.analytics = $('#analytics').val();
-			filter_values.softwarebl = $('#softwarebl').val();
-			filter_values.datamgmt = $('#datamgmt').val();
-			filter_values.programming = $('#programming').val();
-			filter_values.itsystem = $('#itsystem').val();
-			filter_values.softskills = $('#softskills').val();
-			filter_values.risk = $('#risk').val();
-			filter_values.educationlv = $('#education').val();
-
-			if ($('.form-select-education_min').val() === "---") localvalue[0] = 0;else localvalue[0] = $('.form-select-education_min').val();
-			if ($('.form-select-education_max').val() === "---") localvalue[1] = educationField_mb[educationField_mb.length - 1].value;else localvalue[1] = $('.form-select-education_max').val();
-			filter_values.education = localvalue;
-			localvalue = [];
-
-			//Creating a filtered array
-			rezult_array = [];
-			var is_suitable_skill = true,
-			    is_suitable_area = true,
-			    is_suitable_education = true,
-			    is_suitable_experience = true,
-			    is_suitable_analytics = true,
-			    is_suitable_softwarebl = true,
-			    is_suitable_datamgmt = true,
-			    is_suitable_programming = true,
-			    is_suitable_itsystem = true,
-			    is_suitable_softskills = true,
-			    is_suitable_risk = true,
-			    is_suitable_educationlv = true;
-
-			for (var _i4 = 1; _i4 < workdata.length - 1; _i4++) {
-				for (var j = 0; j < workdata[_i4].length; j++) {
-					for (var k = 0; k < rezult_field.length; k++) {
-						if (rezult_field[k].id === j) {
-							if (rezult_field[k].value === 'skill') {
-								is_suitable_skill = false;
-								if (filter_values.skill) {
-									for (var n = 0; n < filter_values.skill.length; n++) {
-										if (workdata[_i4][j].toLowerCase() === filter_values.skill[n].toLowerCase()) {
-											is_suitable_skill = true;
-										}
-									}
-								} else is_suitable_skill = true;
-							} else if (rezult_field[k].value === 'area') {
-								is_suitable_area = false;
-								if (filter_values.area) {
-									for (var _n = 0; _n < filter_values.area.length; _n++) {
-										if (workdata[_i4][j].toLowerCase() === filter_values.area[_n].toLowerCase()) {
-											is_suitable_area = true;
-										}
-									}
-								} else is_suitable_area = true;
-							} else if (rezult_field[k].value === 'education') {
-								is_suitable_education = false;
-								if (filter_values.education) {
-									for (var _n2 = 0; _n2 < educationField_mb.length; _n2++) {
-										if (workdata[_i4][j].toLowerCase() === educationField_mb[_n2].name.toLowerCase() && educationField_mb[_n2].value >= filter_values.education[0] && educationField_mb[_n2].value <= filter_values.education[1]) {
-											is_suitable_education = true;
-										}
-									}
-								} else is_suitable_education = true;
-							} else if (rezult_field[k].value === 'experience') {
-								is_suitable_experience = false;
-								if (filter_values.experience) {
-									if (workdata[_i4][j] >= filter_values.experience[0] && workdata[_i4][j] <= filter_values.experience[1]) is_suitable_experience = true;
-								} else is_suitable_experience = true;
-							} else if (rezult_field[k].value === 'analytics') {
-								is_suitable_analytics = false;
-								if (filter_values.analytics) {
-									if (workdata[_i4][j] === filter_values.analytics) is_suitable_analytics = true;
-								} else is_suitable_analytics = true;
-							} else if (rezult_field[k].value === 'software bl') {
-								is_suitable_softwarebl = false;
-								if (filter_values.softwarebl) {
-									if (workdata[_i4][j] === filter_values.softwarebl) is_suitable_softwarebl = true;
-								} else is_suitable_softwarebl = true;
-							} else if (rezult_field[k].value === 'data mgmt') {
-								is_suitable_datamgmt = false;
-								if (filter_values.datamgmt) {
-									if (workdata[_i4][j] === filter_values.datamgmt) is_suitable_datamgmt = true;
-								} else is_suitable_datamgmt = true;
-							} else if (rezult_field[k].value === 'programming') {
-								is_suitable_programming = false;
-								if (filter_values.programming) {
-									if (workdata[_i4][j] === filter_values.programming) is_suitable_programming = true;
-								} else is_suitable_programming = true;
-							} else if (rezult_field[k].value === 'it system') {
-								is_suitable_itsystem = false;
-								if (filter_values.itsystem) {
-									if (workdata[_i4][j] === filter_values.itsystem) is_suitable_itsystem = true;
-								} else is_suitable_itsystem = true;
-							} else if (rezult_field[k].value === 'soft skills') {
-								is_suitable_softskills = false;
-								if (filter_values.softskills) {
-									if (workdata[_i4][j] === filter_values.softskills) is_suitable_softskills = true;
-								} else is_suitable_softskills = true;
-							} else if (rezult_field[k].value === 'risk') {
-								is_suitable_risk = false;
-								if (filter_values.risk) {
-									if (workdata[_i4][j] === filter_values.risk) is_suitable_risk = true;
-								} else is_suitable_risk = true;
-							} else if (rezult_field[k].value === 'educationlv') {
-								is_suitable_educationlv = false;
-								if (filter_values.educationlv) {
-									if (workdata[_i4][j] === filter_values.educationlv) is_suitable_educationlv = true;
-								} else is_suitable_educationlv = true;
-							}
-						}
-					}
-				}
-				// console.log(is_suitable_experience);
-				if (is_suitable_skill && is_suitable_area && is_suitable_education && is_suitable_experience && is_suitable_analytics && is_suitable_softwarebl && is_suitable_datamgmt && is_suitable_programming && is_suitable_itsystem && is_suitable_softskills && is_suitable_risk && is_suitable_educationlv) rezult_array.push(workdata[_i4]);
-			}
-			rezult_array.unshift(workdata[0]);
-			renderTable(rezult_array, "table-go");
-		} else {
-			alert("Please download the file first! Or wait, it hasn't loaded yet!");
 		}
+		if (localvalue.length != 0) {
+			filter_values.skill = localvalue;
+		} else if (filter_values.skill) delete filter_values.skill;
+
+		localvalue = [];
+		for (var _i3 = 0; _i3 < $('.form-select_area').length; _i3++) {
+			if ($('.form-select_area')[_i3].value != "---") {
+				localvalue.push($('.form-select_area')[_i3].value);
+			}
+		}
+		if (localvalue.length != 0) {
+			filter_values.area = localvalue;
+		} else if (filter_values.area) delete filter_values.area;
+
+		localvalue = [];
+		localvalue[0] = $('#experience').val().charAt(0);
+		localvalue[1] = $('#experience').val().substring($('#experience').val().length - 1);
+		filter_values.experience = localvalue;
+
+		localvalue = [];
+		filter_values.analytics = $('#analytics').val();
+		filter_values.softwarebl = $('#softwarebl').val();
+		filter_values.datamgmt = $('#datamgmt').val();
+		filter_values.programming = $('#programming').val();
+		filter_values.itsystem = $('#itsystem').val();
+		filter_values.softskills = $('#softskills').val();
+		filter_values.risk = $('#risk').val();
+		filter_values.educationlv = $('#education').val();
+
+		localvalue = [];
+		if ($('.form-select-education_min').val() === "---") {
+			localvalue[0] = { value: educationField_mb[0].value, name: educationField_mb[0].name };
+		} else {
+			localvalue[0] = { value: Number($('.form-select-education_min').val()), name: educationField_mb[$('.form-select-education_min').val()].name };
+		}
+		if ($('.form-select-education_max').val() === "---") {
+			localvalue[1] = { value: educationField_mb[educationField_mb.length - 1].value, name: educationField_mb[educationField_mb.length - 1].name };
+		} else {
+			localvalue[1] = { value: Number($('.form-select-education_max').val()), name: educationField_mb[$('.form-select-education_max').val()].name };
+		}
+		filter_values.education = localvalue;
+		localvalue = [];
+
+		//Sending a request to a Python script file
+
+		$.ajax({
+			url: '../example.csv',
+			type: 'get',
+			data: filter_values,
+			success: function success(data) {
+				//Parsing the selected file from csv into an object that can be analyze
+				if (data) {
+					Papa.parse(data, {
+						complete: function complete(results) {
+							fileIsDownloaded = false;
+							//clearFields();
+							fillInFields(results);
+							results.data.pop();
+							workdata = results.data;
+							fileIsDownloaded = true;
+							renderTable(workdata, "table-go");
+						}
+					});
+				}
+			}
+		});
+
+		// //Creating a filtered array
+		// rezult_array = []; 
+		// let is_suitable_skill = true, 
+		// 	is_suitable_area = true, 
+		// 	is_suitable_education = true,
+		// 	is_suitable_experience = true,
+		// 	is_suitable_analytics = true,
+		// 	is_suitable_softwarebl = true,
+		// 	is_suitable_datamgmt = true,
+		// 	is_suitable_programming = true,
+		// 	is_suitable_itsystem = true,
+		// 	is_suitable_softskills = true,
+		// 	is_suitable_risk = true,
+		// 	is_suitable_educationlv = true;
+
+		// for (let i=1; i<workdata.length-1; i++) {
+		// 	for (let j=0; j<workdata[i].length; j++) {
+		// 		for (let k=0; k<rezult_field.length; k++) {
+		// 			if (rezult_field[k].id === j) {
+		// 				if (rezult_field[k].value === 'skill') {
+		// 					is_suitable_skill = false;
+		// 					if (filter_values.skill) {
+		// 						for (let n=0; n<filter_values.skill.length; n++) {
+		// 							if (workdata[i][j].toLowerCase() === filter_values.skill[n].toLowerCase()) {
+		// 								is_suitable_skill = true;
+		// 							}
+		// 						}
+		// 					}
+		// 					else is_suitable_skill = true;
+		// 				}
+		// 				else if (rezult_field[k].value === 'area') {
+		// 					is_suitable_area = false;
+		// 					if (filter_values.area) {
+		// 						for (let n=0; n<filter_values.area.length; n++) {
+		// 							if (workdata[i][j].toLowerCase() === filter_values.area[n].toLowerCase()) {
+		// 								is_suitable_area = true;
+		// 							}
+		// 						}
+		// 					}
+		// 					else is_suitable_area = true;
+		// 				}
+		// 				else if (rezult_field[k].value === 'education') {
+		// 					is_suitable_education = false;
+		// 					if (filter_values.education) {
+		// 						for (let n=0; n<educationField_mb.length; n++) {
+		// 							if (workdata[i][j].toLowerCase() === educationField_mb[n].name.toLowerCase() && educationField_mb[n].value >= filter_values.education[0] && educationField_mb[n].value <= filter_values.education[1]) {
+		// 								is_suitable_education = true;
+		// 							}
+		// 						}
+		// 					}
+		// 					else is_suitable_education = true;
+		// 				}
+		// 				else if (rezult_field[k].value === 'experience') {
+		// 					is_suitable_experience = false;
+		// 					if (filter_values.experience) {
+		// 						if (workdata[i][j] >= filter_values.experience[0] && workdata[i][j] <= filter_values.experience[1]) is_suitable_experience = true;
+		// 					}
+		// 					else is_suitable_experience = true;
+		// 				}
+		// 				else if (rezult_field[k].value === 'analytics') {
+		// 					is_suitable_analytics = false;
+		// 					if (filter_values.analytics) {
+		// 						if (workdata[i][j] === filter_values.analytics) is_suitable_analytics = true;
+		// 					}
+		// 					else is_suitable_analytics = true;
+		// 				}
+		// 				else if (rezult_field[k].value === 'software bl') {
+		// 					is_suitable_softwarebl = false;
+		// 					if (filter_values.softwarebl) {
+		// 						if (workdata[i][j] === filter_values.softwarebl) is_suitable_softwarebl = true;
+		// 					}
+		// 					else is_suitable_softwarebl = true;
+		// 				}
+		// 				else if (rezult_field[k].value === 'data mgmt') {
+		// 					is_suitable_datamgmt = false;
+		// 					if (filter_values.datamgmt) {
+		// 						if (workdata[i][j] === filter_values.datamgmt) is_suitable_datamgmt = true;
+		// 					}
+		// 					else is_suitable_datamgmt = true;
+		// 				}
+		// 				else if (rezult_field[k].value === 'programming') {
+		// 					is_suitable_programming = false;
+		// 					if (filter_values.programming) {
+		// 						if (workdata[i][j] === filter_values.programming) is_suitable_programming = true;
+		// 					}
+		// 					else is_suitable_programming = true;
+		// 				}
+		// 				else if (rezult_field[k].value === 'it system') {
+		// 					is_suitable_itsystem = false;
+		// 					if (filter_values.itsystem) {
+		// 						if (workdata[i][j] === filter_values.itsystem) is_suitable_itsystem = true;
+		// 					}
+		// 					else is_suitable_itsystem = true;
+		// 				}
+		// 				else if (rezult_field[k].value === 'soft skills') {
+		// 					is_suitable_softskills = false;
+		// 					if (filter_values.softskills) {
+		// 						if (workdata[i][j] === filter_values.softskills) is_suitable_softskills = true;
+		// 					}
+		// 					else is_suitable_softskills = true;
+		// 				}
+		// 				else if (rezult_field[k].value === 'risk') {
+		// 					is_suitable_risk = false;
+		// 					if (filter_values.risk) {
+		// 						if (workdata[i][j] === filter_values.risk) is_suitable_risk = true;
+		// 					}
+		// 					else is_suitable_risk = true;
+		// 				}
+		// 				else if (rezult_field[k].value === 'educationlv') {
+		// 					is_suitable_educationlv = false;
+		// 					if (filter_values.educationlv) {
+		// 						if (workdata[i][j] === filter_values.educationlv) is_suitable_educationlv = true;
+		// 					}
+		// 					else is_suitable_educationlv = true;
+		// 				}
+		// 			}
+		// 		}
+		// 	}
+		// 	// console.log(is_suitable_experience);
+		// 	if (is_suitable_skill && is_suitable_area && is_suitable_education && is_suitable_experience && is_suitable_analytics && is_suitable_softwarebl && is_suitable_datamgmt && is_suitable_programming && is_suitable_itsystem && is_suitable_softskills && is_suitable_risk && is_suitable_educationlv) rezult_array.push(workdata[i]);
+		// }
+		// rezult_array.unshift(workdata[0]);
+		// renderTable(rezult_array, "table-go");
 	});
 
 	//Behavior of button Search
 	$('#search').on('click', function () {
 		if ($('#table-go').children().length != 0) {
-			if ($('#search-input').val() === "") alert('Enter a name for the search');else {
+			if ($('#search-input').val() === "") alert('Enter a name for the search');else if (workdata.length === 0) alert('Please wait, the data is not yet loaded!');else {
 				var query = $('#search-input').val().toLowerCase(),
 				    n = void 0,
 				    search_rezult = [];
-				for (var i = 0; i < rezult_array[0].length; i++) {
-					if (rezult_array[0][i].toLowerCase() === 'name') n = i;
+				for (var i = 0; i < workdata[0].length; i++) {
+					if (workdata[0][i].toLowerCase() === 'name') n = i;
 				}
-				for (var _i5 = 1; _i5 < rezult_array.length; _i5++) {
-					if (rezult_array[_i5][n].toLowerCase().indexOf(query) != -1) search_rezult.push(rezult_array[_i5]);
+				for (var _i4 = 1; _i4 < workdata.length; _i4++) {
+					if (workdata[_i4][n].toLowerCase().indexOf(query) != -1) search_rezult.push(workdata[_i4]);
 				}
-				search_rezult.unshift(rezult_array[0]);
+				search_rezult.unshift(workdata[0]);
 				renderTable(search_rezult, "table-search");
 			}
 		} else alert('Missing search fields');
@@ -589,22 +629,26 @@ $(document).ready(function () {
 
 	//Render the table
 	var renderTable = function renderTable(workarray, id) {
-		var thead = '<thead>',
-		    tbody = '<tbody>';
-		for (var i = 0; i < workarray.length; i++) {
-			if (i === 0) thead += '<tr>';else tbody += '<tr>';
-			for (var j = 0; j < workarray[i].length; j++) {
-				if (i === 0) {
-					thead += '<th>' + (workarray[i][j].charAt(0).toUpperCase() + workarray[i][j].substr(1).toLowerCase()) + '</th>';
-				} else {
-					tbody += '<td>' + workarray[i][j] + '</td>';
+		if (workarray.length > 0) {
+			var thead = '<thead>',
+			    tbody = '<tbody>';
+			for (var i = 0; i < workarray.length; i++) {
+				if (i === 0) thead += '<tr>';else tbody += '<tr>';
+				if (workarray[i]) {
+					for (var j = 0; j < workarray[i].length; j++) {
+						if (i === 0) {
+							thead += '<th>' + (workarray[i][j].charAt(0).toUpperCase() + workarray[i][j].substr(1).toLowerCase()) + '</th>';
+						} else {
+							tbody += '<td>' + workarray[i][j] + '</td>';
+						}
+					}
+					if (i === 0) thead += '</tr>';else tbody += '</tr>';
 				}
 			}
-			if (i === 0) thead += '</tr>';else tbody += '</tr>';
+			thead += '</thead>';
+			tbody += '</tbody>';
+			if ($('#' + id).children() != 0) $('#' + id).children().remove();
+			$('#' + id).html(thead + tbody);
 		}
-		thead += '</thead>';
-		tbody += '</tbody>';
-		if ($('#' + id).children() != 0) $('#' + id).children().remove();
-		$('#' + id).html(thead + tbody);
 	};
 });
