@@ -7,12 +7,28 @@ $(document).ready(function () {
 	    // Array of possible values for a field Skill
 	subAreaField = [],
 	    // Array of possible values for a field Area
+	experienceField = 0,
+	    //Maximum value of the field Experience
+	analyticsField = 0,
+	    //Maximum value of the field Analytics
+	softwareblField = 0,
+	    //Maximum value of the field Software Bl
+	datamgmtField = 0,
+	    //Maximum value of the field Data mgmt
+	programmingField = 0,
+	    //Maximum value of the field Programming
+	itsystemField = 0,
+	    //Maximum value of the field IT System
+	softskillsField = 0,
+	    //Maximum value of the field Soft skills
+	riskField = 0,
+	    //Maximum value of the field Risk
+	educationlvField = 0,
+	    //Maximum value of the field Education
 	educationField_mb = [{ name: 'phd', value: 1 }, { name: 'master', value: 2 }, { name: 'magistrale', value: 3 }, { name: 'triennale', value: 4 }, { name: 'diploma', value: 5 }],
 	    //Array of Education field values in ascending order
 	educationField = [],
 	    //Array of field values Education
-	fileType = void 0,
-	    // Type of the loaded file is the first or second
 	workdata = [],
 	    //Array of data from the downloaded file
 	rezult_field = [],
@@ -89,13 +105,8 @@ $(document).ready(function () {
 			Papa.parse(this.files[0], {
 				complete: function complete(results) {
 					fileIsDownloaded = false;
-					fileType = determineFile(results);
 					clearFields();
-					if (fileType === "first") {
-						fillInFields(results);
-					} else if (fileType === "second") {
-						console.log("second type");
-					}
+					fillInFields(results);
 					workdata = results.data;
 					fileIsDownloaded = true;
 				}
@@ -142,16 +153,46 @@ $(document).ready(function () {
 	var fillInFields = function fillInFields(rezults) {
 
 		//Obtaining the necessary numbers of columns
-		var rezult_headers = rezults.data[0];
+		var rezult_headers = rezults.data[0],
+		    count = 0;
 		for (var i = 0; i < rezult_headers.length; i++) {
 			if (rezult_headers[i].toLowerCase() === 'skill') {
-				rezult_field[0] = { id: i, value: 'skill' };
+				rezult_field[count] = { id: i, value: 'skill' };
+				count++;
 			} else if (rezult_headers[i].toLowerCase() === 'area') {
-				rezult_field[1] = { id: i, value: 'area' };
+				rezult_field[count] = { id: i, value: 'area' };
+				count++;
+			} else if (rezult_headers[i].toLowerCase() === 'experience') {
+				rezult_field[count] = { id: i, value: 'experience' };
+				count++;
+			} else if (rezult_headers[i].toLowerCase() === 'analytics') {
+				rezult_field[count] = { id: i, value: 'analytics' };
+				count++;
+			} else if (rezult_headers[i].toLowerCase() === 'software bl') {
+				rezult_field[count] = { id: i, value: 'software bl' };
+				count++;
+			} else if (rezult_headers[i].toLowerCase() === 'data mgmt') {
+				rezult_field[count] = { id: i, value: 'data mgmt' };
+				count++;
+			} else if (rezult_headers[i].toLowerCase() === 'programming') {
+				rezult_field[count] = { id: i, value: 'programming' };
+				count++;
+			} else if (rezult_headers[i].toLowerCase() === 'it system') {
+				rezult_field[count] = { id: i, value: 'it system' };
+				count++;
+			} else if (rezult_headers[i].toLowerCase() === 'soft skills') {
+				rezult_field[count] = { id: i, value: 'soft skills' };
+				count++;
+			} else if (rezult_headers[i].toLowerCase() === 'risk') {
+				rezult_field[count] = { id: i, value: 'risk' };
+				count++;
+			} else if (rezult_headers[i].toLowerCase() === 'education' && !Number(rezults.data[1][i])) {
+				rezult_field[count] = { id: i, value: 'education' };
+				count++;
+			} else if (rezult_headers[i].toLowerCase() === 'education' && Number(rezults.data[1][i])) {
+				rezult_field[count] = { id: i, value: 'educationlv' };
+				count++;
 			}
-			// else if (rezult_headers[i].toLowerCase() === 'education' && !Number(rezults.data[1][i])) {
-			// 	rezult_field[2] = {id: i, value: 'education'};
-			// }
 		}
 
 		//Get arrays of possible values of the desired columns and sort them
@@ -160,76 +201,143 @@ $(document).ready(function () {
 				for (var k = 0; k < rezult_field.length; k++) {
 					if (rezult_field[k].id === j) {
 						if (rezult_field[k].value === 'skill') {
-							var count = 0;
-							for (var l = 0; l < skillField.length; l++) {
-								if (rezults.data[_i][j].toLowerCase() === skillField[l].toLowerCase()) count++;
-							}
-							if (count === 0) skillField.push(rezults.data[_i][j].charAt(0).toUpperCase() + rezults.data[_i][j].substr(1).toLowerCase());
-						} else if (rezult_field[k].value === 'area') {
 							var _count = 0;
-							for (var _l = 0; _l < subAreaField.length; _l++) {
-								if (rezults.data[_i][j].toLowerCase() === subAreaField[_l].toLowerCase()) _count++;
+							for (var l = 0; l < skillField.length; l++) {
+								if (rezults.data[_i][j].toLowerCase() === skillField[l].toLowerCase()) _count++;
 							}
-							if (_count === 0) subAreaField.push(rezults.data[_i][j].charAt(0).toUpperCase() + rezults.data[_i][j].substr(1).toLowerCase());
+							if (_count === 0) skillField.push(rezults.data[_i][j].charAt(0).toUpperCase() + rezults.data[_i][j].substr(1).toLowerCase());
+						} else if (rezult_field[k].value === 'area') {
+							var _count2 = 0;
+							for (var _l = 0; _l < subAreaField.length; _l++) {
+								if (rezults.data[_i][j].toLowerCase() === subAreaField[_l].toLowerCase()) _count2++;
+							}
+							if (_count2 === 0) subAreaField.push(rezults.data[_i][j].charAt(0).toUpperCase() + rezults.data[_i][j].substr(1).toLowerCase());
+						} else if (rezult_field[k].value === 'experience') {
+							if (rezults.data[_i][j] > experienceField) experienceField = rezults.data[_i][j];
+						} else if (rezult_field[k].value === 'analytics') {
+							if (rezults.data[_i][j] > analyticsField) analyticsField = rezults.data[_i][j];
+						} else if (rezult_field[k].value === 'software bl') {
+							if (rezults.data[_i][j] > softwareblField) softwareblField = rezults.data[_i][j];
+						} else if (rezult_field[k].value === 'data mgmt') {
+							if (rezults.data[_i][j] > datamgmtField) datamgmtField = rezults.data[_i][j];
+						} else if (rezult_field[k].value === 'programming') {
+							if (rezults.data[_i][j] > programmingField) programmingField = rezults.data[_i][j];
+						} else if (rezult_field[k].value === 'it system') {
+							if (rezults.data[_i][j] > itsystemField) itsystemField = rezults.data[_i][j];
+						} else if (rezult_field[k].value === 'soft skills') {
+							if (rezults.data[_i][j] > softskillsField) softskillsField = rezults.data[_i][j];
+						} else if (rezult_field[k].value === 'risk') {
+							if (rezults.data[_i][j] > riskField) riskField = rezults.data[_i][j];
+						} else if (rezult_field[k].value === 'educationlv') {
+							if (rezults.data[_i][j] > educationlvField) educationlvField = rezults.data[_i][j];
+						} else if (rezult_field[k].value === 'education') {
+							var _count3 = 0;
+							for (var _l2 = 0; _l2 < educationField.length; _l2++) {
+								if (rezults.data[_i][j].toLowerCase() === educationField[_l2].toLowerCase()) _count3++;
+							}
+							if (_count3 === 0) educationField.push(rezults.data[_i][j].charAt(0).toUpperCase() + rezults.data[_i][j].substr(1).toLowerCase());
 						}
-						// else if (rezult_field[k].value === 'education') {
-						// 	let count = 0;
-						// 	for (let l=0; l<educationField.length; l++) {
-						// 		if (rezults.data[i][j].toLowerCase() === educationField[l].toLowerCase()) count++;
-						// 	}
-						// 	if (count === 0) educationField.push(rezults.data[i][j].charAt(0).toUpperCase() + rezults.data[i][j].substr(1).toLowerCase());
-						// }
 					}
 				}
 			}
 		}
 		skillField.sort();
 		subAreaField.sort();
-		// educationField = sortEducationField(educationField_mb, educationField);
+		educationField = sortEducationField(educationField_mb, educationField);
 
 		fillField(skillField, "form-select_skill");
 		fillField(subAreaField, "form-select_area");
-		// fillField(educationField, "form-select-education");
+		setMaxValueField(experienceField, "experience");
+		setMaxValueField(analyticsField, "analytics");
+		setMaxValueField(softwareblField, "softwarebl");
+		setMaxValueField(datamgmtField, "datamgmt");
+		setMaxValueField(programmingField, "programming");
+		setMaxValueField(itsystemField, "itsystem");
+		setMaxValueField(softskillsField, "softskills");
+		setMaxValueField(riskField, "risk");
+		setMaxValueField(educationlvField, "education");
+
+		fillField(educationField, "form-select-education");
 	};
 
 	//Sort Education field
 	var sortEducationField = function sortEducationField(sampArr, workArr) {
-		var localArray = [],
-		    count = 0;
-		for (var i = 0; i < sampArr.length; i++) {
-			for (var j = 0; j < workArr.length; j++) {
-				if (sampArr[i].name.toLowerCase() === workArr[j].toLowerCase()) {
-					localArray[count] = { value: count, name: workArr[j].charAt(0).toUpperCase() + workArr[j].substr(1).toLowerCase() };
-					count++;
+		if (workArr.length > 0) {
+			var localArray = [],
+			    count = 0;
+			for (var i = 0; i < sampArr.length; i++) {
+				for (var j = 0; j < workArr.length; j++) {
+					if (sampArr[i].name.toLowerCase() === workArr[j].toLowerCase()) {
+						localArray[count] = { value: count, name: workArr[j].charAt(0).toUpperCase() + workArr[j].substr(1).toLowerCase() };
+						count++;
+					}
 				}
 			}
-		}
-		return localArray;
+			return localArray;
+		} else return workArr;
 	};
 
 	//Fill in the fields
-	var fillField = function fillField(skillArr, className) {
+	var fillField = function fillField(work_val, className) {
 		var htmlArr = [],
 		    valueArr = [];
-		// if (typeof skillArr[0] != "object") {
-		htmlArr = skillArr;
-		valueArr = skillArr;
-		// }
-		// else {
-		// 	for (let i=0; i<skillArr.length; i++) {
-		// 		htmlArr[i] = skillArr[i].name;
-		// 		valueArr[i] = skillArr[i].value;
-		// 	}
-		// }
-		for (var i = 0; i < $("." + className).length; i++) {
-			if ($("." + className)[i].children.length <= 1) {
+		if (typeof work_val[0] === "string") {
+			htmlArr = work_val;
+			valueArr = work_val;
+		} else {
+			for (var i = 0; i < work_val.length; i++) {
+				htmlArr[i] = work_val[i].name;
+				valueArr[i] = work_val[i].value;
+			}
+		}
+		for (var _i2 = 0; _i2 < $("." + className).length; _i2++) {
+			if ($("." + className)[_i2].children.length <= 1) {
+
 				for (var j = 0; j < htmlArr.length; j++) {
 					var option = document.createElement('option');
 					option.innerHTML = htmlArr[j];
 					option.setAttribute('value', valueArr[j]);
-					$("." + className)[i].appendChild(option);
+					$("." + className)[_i2].appendChild(option);
 				}
 			}
+		}
+	};
+
+	//Set the maximum value of the slider
+	var setMaxValueField = function setMaxValueField(work_val, id) {
+		if (Number(work_val) == 0) {
+			work_val = 10;
+		}
+		if (id === "experience") {
+			var experience = $('<input>', {
+				"id": "experience",
+				"type": "text",
+				"class": "span2",
+				"value": "",
+				"data-slider-min": "0",
+				"data-slider-max": work_val,
+				"data-slider-step": "1",
+				"data-slider-value": "[0," + work_val + "]"
+			});
+			$("#experience").prev().remove();
+			$("#experience").replaceWith(experience);
+			$("#experience").slider({});
+			$('#experience').next().text(work_val);
+		} else {
+			var element = $('<input>', {
+				"id": id,
+				"type": "text",
+				"data-slider-min": "0",
+				"data-slider-max": work_val,
+				"data-slider-step": "1",
+				"data-slider-value": "0"
+			});
+			$('#' + id).prev().remove();
+			$('#' + id).replaceWith(element);
+			$('#' + id).slider();
+			$('#' + id).on('slide', function (slideEvt) {
+				$('#' + id + 'SliderVal').text(slideEvt.value);
+			});
 		}
 	};
 
@@ -249,16 +357,61 @@ $(document).ready(function () {
 			html: '---'
 		});
 		$('.form-select_area').append(option);
-		// $('.form-select-education').children().remove();
-		// option = $('<option>', {
-		// 	value: '---',
-		// 	html: '---'
-		// });
-		// $('.form-select-education').append(option);
+
+		$('.form-select-education').children().remove();
+		option = $('<option>', {
+			value: '---',
+			html: '---'
+		});
+		$('.form-select-education').append(option);
+
+		rezult_field = [];
 		skillField = [];
 		subAreaField = [];
-		// educationField =[];
+		experienceField = 0;
+		educationField = [];
+		analyticsField = 0;
+		softwareblField = 0;
+		datamgmtField = 0;
+		programmingField = 0;
+		itsystemField = 0;
+		softskillsField = 0;
+		riskField = 0;
+		educationlvField = 0;
 	};
+
+	//Behavior of min and max Education
+	$('.form-select-education_min').on('change', function () {
+		if (fileIsDownloaded) {
+			var local_educationField = [];
+
+			for (var i = 0; i < educationField.length; i++) {
+				if (educationField[i].value >= $(this).val()) {
+					local_educationField.push(educationField[i]);
+				}
+			}
+			var local_value = $('.form-select-education_max').val();
+			$('.form-select-education_max').children().not('option[value="---"]').remove();
+			fillField(local_educationField, "form-select-education_max");
+			$('.form-select-education_max').val(local_value);
+		}
+	});
+
+	$('.form-select-education_max').on('change', function () {
+		if (fileIsDownloaded) {
+			var local_educationField = [];
+
+			for (var i = 0; i < educationField.length; i++) {
+				if (educationField[i].value <= $(this).val()) {
+					local_educationField.push(educationField[i]);
+				}
+			}
+			var local_value = $('.form-select-education_min').val();
+			$('.form-select-education_min').children().not('option[value="---"]').remove();
+			fillField(local_educationField, "form-select-education_min");
+			$('.form-select-education_min').val(local_value);
+		}
+	});
 
 	//Behavior of button Load from Model
 	$('#load-from-model').on('click', function () {
@@ -268,64 +421,148 @@ $(document).ready(function () {
 	//Behavior of button GO
 	$('#go').on('click', function () {
 		if (fileIsDownloaded) {
-			if (fileType === "first") {
-				//Creating a value object for a filter
-				var filter_values = {},
-				    localvalue = [];
-				for (var i = 0; i < $('.form-select_skill').length; i++) {
-					if ($('.form-select_skill')[i].value != "---") {
-						localvalue.push($('.form-select_skill')[i].value);
-					}
+			//Creating a value object for a filter
+			var filter_values = {},
+			    localvalue = [];
+			for (var i = 0; i < $('.form-select_skill').length; i++) {
+				if ($('.form-select_skill')[i].value != "---") {
+					localvalue.push($('.form-select_skill')[i].value);
 				}
-				if (localvalue.length != 0) {
-					filter_values.skill = localvalue;
-				} else if (filter_values.skill) delete filter_values.skill;
+			}
+			if (localvalue.length != 0) {
+				filter_values.skill = localvalue;
+			} else if (filter_values.skill) delete filter_values.skill;
 
-				localvalue = [];
-				for (var _i2 = 0; _i2 < $('.form-select_area').length; _i2++) {
-					if ($('.form-select_area')[_i2].value != "---") {
-						localvalue.push($('.form-select_area')[_i2].value);
-					}
+			localvalue = [];
+			for (var _i3 = 0; _i3 < $('.form-select_area').length; _i3++) {
+				if ($('.form-select_area')[_i3].value != "---") {
+					localvalue.push($('.form-select_area')[_i3].value);
 				}
-				if (localvalue.length != 0) {
-					filter_values.area = localvalue;
-				} else if (filter_values.area) delete filter_values.area;
+			}
+			if (localvalue.length != 0) {
+				filter_values.area = localvalue;
+			} else if (filter_values.area) delete filter_values.area;
 
-				//Creating a filtered array
-				rezult_array = [];
-				var is_suitable_skill = false,
-				    is_suitable_area = false;
-				for (var _i3 = 1; _i3 < workdata.length - 1; _i3++) {
-					for (var j = 0; j < workdata[_i3].length; j++) {
-						for (var k = 0; k < rezult_field.length; k++) {
-							if (rezult_field[k].id === j) {
-								if (rezult_field[k].value === 'skill') {
-									if (filter_values.skill) {
-										for (var n = 0; n < filter_values.skill.length; n++) {
-											if (workdata[_i3][j].toLowerCase() === filter_values.skill[n].toLowerCase()) {
-												is_suitable_skill = true;
-											}
+			localvalue = [];
+			localvalue[0] = $('#experience').val().charAt(0);
+			localvalue[1] = $('#experience').val().substring($('#experience').val().length - 1);
+			filter_values.experience = localvalue;
+
+			localvalue = [];
+			filter_values.analytics = $('#analytics').val();
+			filter_values.softwarebl = $('#softwarebl').val();
+			filter_values.datamgmt = $('#datamgmt').val();
+			filter_values.programming = $('#programming').val();
+			filter_values.itsystem = $('#itsystem').val();
+			filter_values.softskills = $('#softskills').val();
+			filter_values.risk = $('#risk').val();
+			filter_values.educationlv = $('#education').val();
+
+			if ($('.form-select-education_min').val() === "---") localvalue[0] = 0;else localvalue[0] = $('.form-select-education_min').val();
+			if ($('.form-select-education_max').val() === "---") localvalue[1] = educationField_mb[educationField_mb.length - 1].value;else localvalue[1] = $('.form-select-education_max').val();
+			filter_values.education = localvalue;
+			localvalue = [];
+
+			//Creating a filtered array
+			rezult_array = [];
+			var is_suitable_skill = true,
+			    is_suitable_area = true,
+			    is_suitable_education = true,
+			    is_suitable_experience = true,
+			    is_suitable_analytics = true,
+			    is_suitable_softwarebl = true,
+			    is_suitable_datamgmt = true,
+			    is_suitable_programming = true,
+			    is_suitable_itsystem = true,
+			    is_suitable_softskills = true,
+			    is_suitable_risk = true,
+			    is_suitable_educationlv = true;
+
+			for (var _i4 = 1; _i4 < workdata.length - 1; _i4++) {
+				for (var j = 0; j < workdata[_i4].length; j++) {
+					for (var k = 0; k < rezult_field.length; k++) {
+						if (rezult_field[k].id === j) {
+							if (rezult_field[k].value === 'skill') {
+								is_suitable_skill = false;
+								if (filter_values.skill) {
+									for (var n = 0; n < filter_values.skill.length; n++) {
+										if (workdata[_i4][j].toLowerCase() === filter_values.skill[n].toLowerCase()) {
+											is_suitable_skill = true;
 										}
-									} else is_suitable_skill = true;
-								} else if (rezult_field[k].value === 'area') {
-									if (filter_values.area) {
-										for (var _n = 0; _n < filter_values.area.length; _n++) {
-											if (workdata[_i3][j].toLowerCase() === filter_values.area[_n].toLowerCase()) {
-												is_suitable_area = true;
-											}
+									}
+								} else is_suitable_skill = true;
+							} else if (rezult_field[k].value === 'area') {
+								is_suitable_area = false;
+								if (filter_values.area) {
+									for (var _n = 0; _n < filter_values.area.length; _n++) {
+										if (workdata[_i4][j].toLowerCase() === filter_values.area[_n].toLowerCase()) {
+											is_suitable_area = true;
 										}
-									} else is_suitable_area = true;
-								}
+									}
+								} else is_suitable_area = true;
+							} else if (rezult_field[k].value === 'education') {
+								is_suitable_education = false;
+								if (filter_values.education) {
+									for (var _n2 = 0; _n2 < educationField_mb.length; _n2++) {
+										if (workdata[_i4][j].toLowerCase() === educationField_mb[_n2].name.toLowerCase() && educationField_mb[_n2].value >= filter_values.education[0] && educationField_mb[_n2].value <= filter_values.education[1]) {
+											is_suitable_education = true;
+										}
+									}
+								} else is_suitable_education = true;
+							} else if (rezult_field[k].value === 'experience') {
+								is_suitable_experience = false;
+								if (filter_values.experience) {
+									if (workdata[_i4][j] >= filter_values.experience[0] && workdata[_i4][j] <= filter_values.experience[1]) is_suitable_experience = true;
+								} else is_suitable_experience = true;
+							} else if (rezult_field[k].value === 'analytics') {
+								is_suitable_analytics = false;
+								if (filter_values.analytics) {
+									if (workdata[_i4][j] === filter_values.analytics) is_suitable_analytics = true;
+								} else is_suitable_analytics = true;
+							} else if (rezult_field[k].value === 'software bl') {
+								is_suitable_softwarebl = false;
+								if (filter_values.softwarebl) {
+									if (workdata[_i4][j] === filter_values.softwarebl) is_suitable_softwarebl = true;
+								} else is_suitable_softwarebl = true;
+							} else if (rezult_field[k].value === 'data mgmt') {
+								is_suitable_datamgmt = false;
+								if (filter_values.datamgmt) {
+									if (workdata[_i4][j] === filter_values.datamgmt) is_suitable_datamgmt = true;
+								} else is_suitable_datamgmt = true;
+							} else if (rezult_field[k].value === 'programming') {
+								is_suitable_programming = false;
+								if (filter_values.programming) {
+									if (workdata[_i4][j] === filter_values.programming) is_suitable_programming = true;
+								} else is_suitable_programming = true;
+							} else if (rezult_field[k].value === 'it system') {
+								is_suitable_itsystem = false;
+								if (filter_values.itsystem) {
+									if (workdata[_i4][j] === filter_values.itsystem) is_suitable_itsystem = true;
+								} else is_suitable_itsystem = true;
+							} else if (rezult_field[k].value === 'soft skills') {
+								is_suitable_softskills = false;
+								if (filter_values.softskills) {
+									if (workdata[_i4][j] === filter_values.softskills) is_suitable_softskills = true;
+								} else is_suitable_softskills = true;
+							} else if (rezult_field[k].value === 'risk') {
+								is_suitable_risk = false;
+								if (filter_values.risk) {
+									if (workdata[_i4][j] === filter_values.risk) is_suitable_risk = true;
+								} else is_suitable_risk = true;
+							} else if (rezult_field[k].value === 'educationlv') {
+								is_suitable_educationlv = false;
+								if (filter_values.educationlv) {
+									if (workdata[_i4][j] === filter_values.educationlv) is_suitable_educationlv = true;
+								} else is_suitable_educationlv = true;
 							}
 						}
 					}
-					if (is_suitable_skill && is_suitable_area) rezult_array.push(workdata[_i3]);
-					is_suitable_skill = false;
-					is_suitable_area = false;
 				}
-				rezult_array.unshift(workdata[0]);
-				renderTable(rezult_array, "table-go");
+				// console.log(is_suitable_experience);
+				if (is_suitable_skill && is_suitable_area && is_suitable_education && is_suitable_experience && is_suitable_analytics && is_suitable_softwarebl && is_suitable_datamgmt && is_suitable_programming && is_suitable_itsystem && is_suitable_softskills && is_suitable_risk && is_suitable_educationlv) rezult_array.push(workdata[_i4]);
 			}
+			rezult_array.unshift(workdata[0]);
+			renderTable(rezult_array, "table-go");
 		} else {
 			alert("Please download the file first! Or wait, it hasn't loaded yet!");
 		}
@@ -341,8 +578,8 @@ $(document).ready(function () {
 				for (var i = 0; i < rezult_array[0].length; i++) {
 					if (rezult_array[0][i].toLowerCase() === 'name') n = i;
 				}
-				for (var _i4 = 1; _i4 < rezult_array.length; _i4++) {
-					if (rezult_array[_i4][n].toLowerCase().indexOf(query) != -1) search_rezult.push(rezult_array[_i4]);
+				for (var _i5 = 1; _i5 < rezult_array.length; _i5++) {
+					if (rezult_array[_i5][n].toLowerCase().indexOf(query) != -1) search_rezult.push(rezult_array[_i5]);
 				}
 				search_rezult.unshift(rezult_array[0]);
 				renderTable(search_rezult, "table-search");
