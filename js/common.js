@@ -462,7 +462,7 @@ $(document).ready(function () {
 		//Sending a request to a Python script file
 
 		$.ajax({
-			url: '../example.csv',
+			url: 'example.csv',
 			type: 'get',
 			data: filter_values,
 			success: function success(data) {
